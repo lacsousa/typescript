@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+      "target": "es6",
+      "outDir": "app/js",
+      "noEmitOnError": true //enquanto houverem erros não gera o arquivo .js
+  },
+  "include": [
+      "app/ts/**/*"
+  ]
+}
