@@ -2,7 +2,8 @@
   "compilerOptions": {
       "target": "es6",
       "outDir": "app/js",
-      "noEmitOnError": true //enquanto houverem erros não gera o arquivo .js
+      "noEmitOnError": true, //enquanto houverem erros não gera o arquivo .js
+      "noImplicitAny": true  // Forçar o compilador a sempre pedir o tipo
   },
   "include": [
       "app/ts/**/*"
