@@ -1,8 +1,4 @@
 class Negociacao {
-    // private _data : Date; se vc declarar nos parâmetros do constructor,
-    // não precisa declarar aqui, nem dentro do constructor
-    // private _quantidade: number;
-    // private _valor : number ;
     constructor(_data, _quantidade, _valor) {
         this._data = _data;
         this._quantidade = _quantidade;

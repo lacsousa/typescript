@@ -3,7 +3,8 @@
       "target": "es6",
       "outDir": "app/js",
       "noEmitOnError": true, //enquanto houverem erros não gera o arquivo .js
-      "noImplicitAny": true  // Forçar o compilador a sempre pedir o tipo
+      "noImplicitAny": true,  // Forçar o compilador a sempre pedir o tipo
+      "removeComments": true // Não deixa os comentários irem para o código de produção
   },
   "include": [
       "app/ts/**/*"
