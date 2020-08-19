@@ -1,12 +1,26 @@
-var Views;
-(function (Views) {
-    class View {
-        constructor(seletor) {
-            this._elemento = $(seletor);
+System.register([], function (exports_1, context_1) {
+    "use strict";
+    var View;
+    var __moduleName = context_1 && context_1.id;
+    return {
+        setters: [],
+        execute: function () {
+            View = class View {
+                constructor(seletor, escapar = false) {
+                    this._elemento = $(seletor);
+                    this._escapar = escapar;
+                }
+                update(model) {
+                    const t1 = performance.now();
+                    let template = this.template(model);
+                    if (this._escapar)
+                        template = template.replace(/<script>[\s\S]*?<\/script>/, '');
+                    this._elemento.html(template);
+                    const t2 = performance.now();
+                    console.log(`Tempo de execução do método View.update(): ${(t2 - t1) / 1000} segundos`);
+                }
+            };
+            exports_1("View", View);
         }
-        update(model) {
-            this._elemento.html(this.template(model));
-        }
-    }
-    Views.View = View;
-})(Views || (Views = {}));
+    };
+});

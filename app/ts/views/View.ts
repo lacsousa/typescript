@@ -1,21 +1,31 @@
-namespace Views {
+export abstract class View<T> {
 
-  export abstract class View<T> {
+    protected _elemento: JQuery;
+    private _escapar: boolean;
 
-      protected _elemento: JQuery;
+    constructor(seletor: string, escapar: boolean = false) {
 
-      constructor(seletor: string) {
+        // parâmetros opcionais devem ser os últimos do construtor
+        this._elemento = $(seletor);
+        this._escapar = escapar;
+    }
 
-          this._elemento = $(seletor);
-      }
+    update(model: T) {
 
-      update(model: T) {
+        // Medir performance
+        const t1 = performance.now();
 
-          this._elemento.html(this.template(model));
-      }
+        let template = this.template(model);
+        if(this._escapar) 
+            template = template.replace(/<script>[\s\S]*?<\/script>/, '');
 
-      abstract template(model: T): string;
+        this._elemento.html(template);
 
-  }
+        const t2 = performance.now();
+        console.log(`Tempo de execução do método View.update(): ${(t2-t1)/1000} segundos`)
+
+    }
+
+    abstract template(model: T): string;
 
 }
