@@ -6,7 +6,8 @@
       "noImplicitAny": true,  // Forçar o compilador a sempre pedir o tipo
       "removeComments": true, // Não deixa os comentários irem para o código de produção
       "module": "system",
-      "strictNullChecks": true // null e undefined não fazem parte do domínio dos tipos
+      "strictNullChecks": true, // null e undefined não fazem parte do domínio dos tipos
+      "experimentalDecorators": true
   },
   "include": [
       "app/ts/**/*"
