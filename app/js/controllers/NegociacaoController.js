@@ -1,4 +1,4 @@
-System.register(["../views/index", "../models/index", "../helpers/decorators/index", "../services/index"], function (exports_1, context_1) {
+System.register(["../views/index", "../models/index", "../helpers/decorators/index", "../services/index", "../helpers/index"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -6,7 +6,7 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/ind
         else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     };
-    var index_1, index_2, index_3, index_4, NegociacaoController, DiaDaSemana;
+    var index_1, index_2, index_3, index_4, index_5, NegociacaoController, DiaDaSemana;
     var __moduleName = context_1 && context_1.id;
     return {
         setters: [
@@ -21,6 +21,9 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/ind
             },
             function (index_4_1) {
                 index_4 = index_4_1;
+            },
+            function (index_5_1) {
+                index_5 = index_5_1;
             }
         ],
         execute: function () {
@@ -42,20 +45,26 @@ System.register(["../views/index", "../models/index", "../helpers/decorators/ind
                     this._negociacoes.adiciona(negociacao);
                     this._negociacoesView.update(this._negociacoes);
                     this._mensagemView.update('Negociação adicionada com sucesso!');
+                    index_5.imprime(negociacao, this._negociacoes);
                 }
                 _ehDiaUtil(data) {
                     return data.getDay() != DiaDaSemana.Sabado && data.getDay() != DiaDaSemana.Domingo;
                 }
                 importarDados() {
-                    const isOk = (res) => {
-                        if (res.ok)
-                            return res;
-                        throw new Error(res.statusText);
-                    };
                     this._service
-                        .obterNegociacoes(isOk)
-                        .then(negociacoes => {
-                        negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
+                        .obterNegociacoes(res => {
+                        if (res.ok) {
+                            return res;
+                        }
+                        else {
+                            throw new Error(res.statusText);
+                        }
+                    })
+                        .then(negociacoesParaImportar => {
+                        const negociacoesJaImportadas = this._negociacoes.paraArray();
+                        negociacoesParaImportar
+                            .filter(negociacao => !negociacoesJaImportadas.some(jaImportada => negociacao.ehIgual(jaImportada)))
+                            .forEach(negociacao => this._negociacoes.adiciona(negociacao));
                         this._negociacoesView.update(this._negociacoes);
                     });
                 }

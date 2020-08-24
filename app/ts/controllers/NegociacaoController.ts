@@ -1,7 +1,8 @@
 import { NegociacoesView, MensagemView } from '../views/index';
-import { Negociacao, Negociacoes } from '../models/index';
+import { Negociacao, Negociacoes, NegociacaoParcial } from '../models/index';
 import { domInject, throttle } from '../helpers/decorators/index';
 import { NegociacaoService, ResponseHandler } from '../services/index';
+import { imprime } from '../helpers/index';
 
 export class NegociacaoController {
 
@@ -44,6 +45,8 @@ export class NegociacaoController {
 
         this._negociacoesView.update(this._negociacoes);
         this._mensagemView.update('Negociação adicionada com sucesso!');
+
+        imprime(negociacao, this._negociacoes);
     }
 
     private _ehDiaUtil(data: Date) {
@@ -53,21 +56,29 @@ export class NegociacaoController {
 
     @throttle()
     importarDados() {
-        // alert('Oi');
-        
-        const isOk: ResponseHandler = (res: Response) => {
-            if(res.ok) return res;
-            throw new Error(res.statusText);
-        }
 
         this._service
-        .obterNegociacoes(isOk)
-        .then(negociacoes => {
-            negociacoes.forEach(negociacao => 
-                this._negociacoes.adiciona(negociacao));
-            this._negociacoesView.update(this._negociacoes);
-        });  
+            .obterNegociacoes(res => {
 
+                if(res.ok) {
+                    return res;
+                } else {
+                    throw new Error(res.statusText);
+                }
+            })
+            .then(negociacoesParaImportar => {
+
+                const negociacoesJaImportadas = this._negociacoes.paraArray();
+
+                negociacoesParaImportar
+                    .filter(negociacao => 
+                        !negociacoesJaImportadas.some(jaImportada => 
+                            negociacao.ehIgual(jaImportada)))
+                    .forEach(negociacao => 
+                    this._negociacoes.adiciona(negociacao));
+
+                this._negociacoesView.update(this._negociacoes);
+            });
     }
 }
 
