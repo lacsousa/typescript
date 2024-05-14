@@ -1,5 +1,5 @@
 {
-  "name": "alurabank",
+  "name": "conceitos-ts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,18 @@
     "server": "lite-server --baseDir=app",
     "start": "concurrently \"npm run watch\" \"npm run server\""
   },
-  "author": "",
+  "author": "Luciano Cordeiro <lacsousa@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/jquery": "^2.0.42",
     "concurrently": "^3.4.0",
     "lite-server": "^2.3.0",
-    "typescript": "^2.3.2"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
+    "express": "^4.19.2",
     "jshint": "^2.12.0"
-  }
+  },
+  "repository": "https://github.com/lacsousa/typescript.git"
 }
